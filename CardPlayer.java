@@ -6,7 +6,10 @@ public abstract class CardPlayer {
 
     public int getActiveHandValue(){
         Hand activeHand = this.getActiveHand();
-        return activeHand.getValue();
+        if (activeHand != null) {
+            return activeHand.getValue();
+        }
+        return 9999;
     }
 
 }
