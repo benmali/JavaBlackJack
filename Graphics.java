@@ -1,4 +1,4 @@
-package blackjackgame;
+package com.example.blackjackv2;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.blackjack.BasicView;
-import com.example.blackjack.GameView;
+import com.example.blackjackv2.BasicView;
+import com.example.blackjackv2.GameView;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
@@ -19,8 +19,7 @@ import java.util.concurrent.locks.Lock;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Graphics extends AppCompatActivity {{}
-
+public class Graphics extends AppCompatActivity {
 
 
     public void showTextWithSleep(final TextView tv, final String text, final int time){ // method to call conclude with delay
@@ -40,66 +39,7 @@ public class Graphics extends AppCompatActivity {{}
                     }
                 });
             }
-        }).start();// end of thread
-    }
-    public void showText(final TextView tv, final String text){
-        tv.setText(text);
-        tv.setVisibility(View.VISIBLE);
-
-    }
-
-
-
-    public void showCardsWithSleep(final RunGame game, final int idx, final ImageView iv, final int time, final Resources res){ // method to call conclude with delay
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(time);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        createImage(game,idx,iv,res);
-                    }
-                });
-            }
-        }).start();// end of thread
-    }
-    public void createImage(RunGame game,  int i, ImageView iv,Resources res){ // i represents idx of card in hand
-        String card = game.getDisplayCardInIdx(game.dealer, i);
-        Bitmap cardShow = BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + card, null, "com.example.blackjack"));
-        //Bitmap cardShow = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("@drawable/" + card, null, "com.example.blackjack"));
-        Bitmap image = resizeBitmap(cardShow, 300);
-        iv.setImageBitmap(image);
-
-    }
-    //method overload for player
-    public void createImage(RunGame game, Hand hand, int i, ImageView iv,Resources res){ // i represents idx of card in hand
-        String card = game.getDisplayCardInIdx(hand, i);
-        Bitmap cardShow = BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + card, null, "com.example.blackjack"));
-        Bitmap newimg3 = resizeBitmap(cardShow, 300);
-        iv.setImageBitmap(newimg3);
-
-    }
-
-    public Bitmap resizeBitmap(Bitmap getBitmap, int maxSize) {
-        int width = getBitmap.getWidth();
-        int height = getBitmap.getHeight();
-        double x;
-
-        if (width >= height && width > maxSize) {
-            x = width / height;
-            width = maxSize;
-            height = (int) (maxSize / x);
-        } else if (height >= width && height > maxSize) {
-            x = height / width;
-            height = maxSize;
-            width = (int) (maxSize / x);
-        }
-        return Bitmap.createScaledBitmap(getBitmap, width, height, false);
+        }).start();
     }
 
     public void displayFirstCards(final ArrayList<Gambler> players, final Dealer dealer, final GameView view, final Resources res, final Lock lock, final Condition condition){
@@ -125,7 +65,7 @@ public class Graphics extends AppCompatActivity {{}
 
                         if(cardIndex ==0) { //makes first dealer card a flipped card
                             view.draw(BitmapFactory.decodeResource(res,res.getIdentifier("@drawable/card_back",
-                                    null, "com.example.blackjack")),4);
+                                    null, "com.example.blackjackv2")),4);
 
                             hand = 0;
                             cardIndex ++;
@@ -215,6 +155,7 @@ public class Graphics extends AppCompatActivity {{}
                             e.printStackTrace();
                         }
                         finally {
+                            //alert Activity that drawing is finished
                             lock.lock();
                             condition.signalAll();
                             lock.unlock();
@@ -248,28 +189,8 @@ public class Graphics extends AppCompatActivity {{}
             toast.show();
         }
 
-    }
-    public void showToastAdLoaded(Context context){
-        String stats = "Ad Loaded";
-        Toast toast =Toast.makeText(context,stats,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 320);
-        toast.show();
-    }
-
-    public void showToastBlackJack(Context context){
-        String burnText = "BlackJack!";
-        Toast toast =Toast.makeText(context,burnText,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 20);
-        toast.show();
-    }
-
-    public void showToastBurned(Context context){
-        String burnText = "BlackJack!";
-        Toast toast =Toast.makeText(context,burnText,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 20);
-        toast.show();
-    }
 
 
 
+}
 }

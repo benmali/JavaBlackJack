@@ -1,12 +1,10 @@
-package blackjackgame;
+package com.example.blackjackv2;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class Card implements Parcelable {
+public class Card  {
     private int suit;
     private int value;
 
@@ -16,9 +14,13 @@ public class Card implements Parcelable {
         this.suit = suit;
         this.value = value;
     }
+    //copy constructor
+    public Card(Card card){
+        this.suit = card.getSuit();
+        this.value = card.value;
+    }
 
-    public int getCount(){
-
+    public int getCountValue(){
         if(value>=2 && value<=6){
             return 1;
         }
@@ -35,24 +37,27 @@ public class Card implements Parcelable {
         return this.suit;
     }
 
+    //returns numerical value of card
+    public int getValue(){
 
-    public int getValue()
-    {
         if(this.value >10){
             return 10;
         }
         return this.value;
     }
+
+    //method to return display value of card (jack,queen,king)
     public int getValueDisplay(){
         return this.value;
     }
+
     public Bitmap getCardImage(Resources res){
         String card = getCardText();
-        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + card, null, "com.example.blackjack"));
+        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + card, null, "com.example.blackjackv2"));
 
     }
 
-
+    //method to fetch card images
     private String getCardText(){
          int value = this.getValueDisplay();
          int suitCode = this.suit;
@@ -71,7 +76,6 @@ public class Card implements Parcelable {
         if (suitCode == 3){
             suit = "spades";
         }
-
         if (value == 1){
             valueText = "ace";
         }
@@ -111,39 +115,8 @@ public class Card implements Parcelable {
         if (value == 13){
             valueText = "king";
         }
-        String card = valueText + "_of_"+ suit;
-        return card;
+        return valueText + "_of_"+ suit;
     }
 
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.suit);
-        dest.writeInt(this.value);
-    }
-
-    protected Card(Parcel in) {
-        this.suit = in.readInt();
-        this.value = in.readInt();
-    }
-
-
-
-    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
-        @Override
-        public Card createFromParcel(Parcel source) {
-            return new Card(source);
-        }
-
-        @Override
-        public Card[] newArray(int size) {
-            return new Card[size];
-        }
-    };
 }

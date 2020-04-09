@@ -1,28 +1,25 @@
-package blackjackgame;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.example.blackjackv2;
 
 import java.util.ArrayList;
 
-public class Dealer extends CardPlayer implements Parcelable {
-    boolean split = false;
+public class Dealer extends CardPlayer {
     private Hand hand;
-    private String name;
-    Deck deck;
+    public Deck deck;
+
 
     public Dealer(Deck deck) {
-        this.name = "Dealer";
         this.deck = deck;
         this.hand = new Hand();
     }
+
+
     public Hand getHand() {
         return hand;
     }
     public int getHandValue(){
         return  this.hand.getValue();
     }
-    public ArrayList<Card> getCards(){
+    public ArrayList <Card> getCards(){
         return hand.getCards();
     }
     public Card getFaceUpCard(){ // needs to get card from dealer
@@ -32,70 +29,42 @@ public class Dealer extends CardPlayer implements Parcelable {
     public void resetHand(){
         Hand hand = new Hand();
         this.hand = hand;
-
     }
-
-    public int openCardsCounting(Deck deck){
-        while (!this.shouldStop()) {
-            this.hand.getCardFromDeck(deck);
-        }
-        return this.hand.getValue();
-    }
-
 
     public int openCards(Deck deck) {
         while (!this.shouldStop()) {
             this.hand.getCard(deck);
         }
-        return this.hand.value;
-    }
-    public void getCard(Deck deck){
-        this.hand.getCard(deck);
+        return this.hand.getValue();
     }
 
     @Override
-    protected Hand getActiveHand() {
+    public Hand getActiveHand() {
         return this.getHand();
     }
     @Override
     public boolean shouldStop() {
         return this.hand.getValue() >= 17;
     }
+
+    @Override
+    protected void hit() {
+        this.hand.getCard(deck);
+    }
+
     public boolean isBurned(){
         return this.hand.getValue() > 21;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public boolean hasBlackJack(){
+        return (this.hand.getCards().size() == 2 && this.hand.getValue() ==21);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeByte(this.split ? (byte) 1 : (byte) 0);
-        dest.writeParcelable((Parcelable) this.hand, flags);
-        dest.writeString(this.name);
-    }
 
-    protected Dealer(Parcel in) {
 
-        this.split = in.readByte() != 0;
-        this.hand = in.readParcelable(Hand.class.getClassLoader());
-        this.name = in.readString();
-    }
 
-    public static final Parcelable.Creator<Dealer> CREATOR = new Parcelable.Creator<Dealer>() {
-        @Override
-        public Dealer createFromParcel(Parcel source) {
-            return new Dealer(source);
-        }
 
-        @Override
-        public Dealer[] newArray(int size) {
-            return new Dealer[size];
-        }
-    };
 }
 
 

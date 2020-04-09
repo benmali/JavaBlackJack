@@ -1,4 +1,4 @@
-package com.example.blackjack;
+package com.example.blackjackv2;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,10 +11,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
-import blackjackgame.Card;
-import blackjackgame.Dealer;
-import blackjackgame.Gambler;
-import blackjackgame.Graphics;
 
 public class BasicView extends View {
 
@@ -48,13 +44,12 @@ public class BasicView extends View {
 
 
     public void setPlayerHandValue(Bitmap imageOfValue){  // puts icon of value to view
-        playerHandValue = graphics.resizeBitmap(imageOfValue,(int)this.height/13);
+        playerHandValue = GraphicsHelper.resizeImage(imageOfValue,(int)this.height/13);
     }
 
     public void setDealerHandValue(Bitmap imageOfValue){ // puts icon of value to view
-        dealerHandValue = graphics.resizeBitmap(imageOfValue,(int)this.height/13);
+        dealerHandValue = GraphicsHelper.resizeImage(imageOfValue,(int)this.height/13);
     }
-
 
     public void resetValueIcons(){
         playerHandValue = null;
@@ -63,17 +58,17 @@ public class BasicView extends View {
 
     public Bitmap getValueIcon(Dealer dealer, Resources res){  //have to set the value icons names as value2 for example
         String value = "value" + dealer.getHandValue() ;// + player.getHands().get(0).getValue();
-        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjack"));
+        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjackv2"));
     }
 
     public Bitmap getFirstCardValueIcon(Dealer dealer, Resources res){
         String value = "value" + dealer.getFaceUpCard().getValue() ;// + player.getHands().get(0).getValue();
-        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjack"));
+        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjackv2"));
     }
 
     public Bitmap getValueIcon(Gambler player, Resources res){  //have to set the value icons names as value2 for example
         String value = "value" + player.getHands().get(0).getValue() ;// + player.getHands().get(0).getValue();
-        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjack"));
+        return BitmapFactory.decodeResource(res, res.getIdentifier("@drawable/" + value, null, "com.example.blackjackv2"));
     }
 
     public void drawCards(Gambler player,Resources res){
@@ -88,7 +83,6 @@ public class BasicView extends View {
 
     public void draw(Bitmap image,int handNumber){
         switch (handNumber){
-
             case 0: // player sits in left sit
                 this.images.add(graphics.resizeBitmap(image,(int)this.height/7));
                 break;

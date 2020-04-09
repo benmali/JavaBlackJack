@@ -1,4 +1,4 @@
-package blackjackgame;
+package com.example.blackjackv2;
 
 public class Matrix {
     private Card dealerCard;
@@ -6,7 +6,7 @@ public class Matrix {
     private int playerHandValue;
     int [] cardValues;
 
-    public Matrix(Gambler player,Dealer dealer){
+    public Matrix(Gambler player, Dealer dealer){
         this.player = player;
         this.cardValues = getCardValues();
         this.dealerCard = dealer.getFaceUpCard();
